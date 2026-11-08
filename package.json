@@ -1,0 +1,34 @@
+{
+  "name": "donatiq",
+  "version": "1.0.0",
+  "private": true,
+  "description": "منصة تبرعات لصناع المحتوى في العراق مع تنبيهات مباشرة لبث TikTok Live",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "prisma generate && next build",
+    "start": "node server.js --prod",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "autoprefixer": "^10.4.20",
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6",
+    "next": "^14.2.15",
+    "postcss": "^8.4.47",
+    "prisma": "^5.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^3.4.14"
+  },
+  "engines": {
+    "node": ">=18.18"
+  }
+}

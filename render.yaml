@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: donatiq
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: WEBHOOK_SECRET
+        generateValue: true
+      - key: PLATFORM_FEE_PERCENT
+        value: 30
+      - key: MIN_DONATION_IQD
+        value: 1000
+      - key: MAX_DONATION_IQD
+        value: 5000000
+      - key: MIN_PAYOUT_IQD
+        value: 25000
+      - key: ALLOW_MOCK_PAYMENTS
+        value: true
+      - key: FIB_BASE_URL
+        value: https://fib.stage.fib.iq
+      - key: FIB_CLIENT_ID
+        sync: false
+      - key: FIB_CLIENT_SECRET
+        sync: false
+      - key: ZAINCASH_BASE_URL
+        value: https://pg-api-uat.zaincash.iq
+      - key: ZAINCASH_CLIENT_ID
+        sync: false
+      - key: ZAINCASH_CLIENT_SECRET
+        sync: false
+      - key: ZAINCASH_API_KEY
+        sync: false
+      - key: ZAINCASH_SERVICE_TYPE
+        sync: false
