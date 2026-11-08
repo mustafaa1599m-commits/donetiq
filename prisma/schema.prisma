@@ -1,0 +1,119 @@
+// ============================================================
+// Donatiq - مخطط قاعدة البيانات الجاهز للإنتاج (PostgreSQL / Supabase)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CREATOR") // "CREATOR" | "ADMIN"
+  createdAt    DateTime @default(now())
+
+  creator Creator?
+}
+
+model Creator {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  username     String   @unique
+  displayName  String
+  bio          String?
+  avatarUrl    String?
+  tiktokHandle String?
+
+  overlayToken String   @unique
+
+  balance     Int      @default(0)
+  totalEarned Int      @default(0)
+  minDonation Int      @default(1000)
+  isActive    Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  donations     Donation[]
+  payouts       Payout[]
+  alertSettings AlertSettings?
+}
+
+model Donation {
+  id        String @id @default(cuid())
+  creatorId String
+
+  donorName String
+  message   String?
+
+  amount        Int
+  feePercent    Int
+  platformFee   Int
+  creatorAmount Int
+
+  status  String @default("PENDING") // PENDING | PAID | FAILED | EXPIRED | REFUNDED
+  gateway String // MOCK | FIB | ZAINCASH
+
+  gatewayPaymentId String?
+  gatewayRef       String?
+  checkoutUrl      String?
+  expiresAt        DateTime?
+
+  paidAt       DateTime?
+  alertAckedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator Creator @relation(fields: [creatorId], references: [id], onDelete: Restrict)
+
+  @@unique([gateway, gatewayPaymentId])
+  @@index([creatorId, status, createdAt])
+  @@index([creatorId, status, alertAckedAt, paidAt])
+}
+
+model Payout {
+  id          String    @id @default(cuid())
+  creatorId   String
+  amount      Int
+  method      String // ZAINCASH | FIB | QICARD | BANK
+  accountInfo String
+  status      String    @default("REQUESTED") // REQUESTED | APPROVED | PAID | REJECTED
+  adminNote   String?
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+
+  creator Creator @relation(fields: [creatorId], references: [id], onDelete: Restrict)
+
+  @@index([creatorId, createdAt])
+  @@index([status, createdAt])
+}
+
+model AlertSettings {
+  id        String @id @default(cuid())
+  creatorId String @unique
+
+  minAlertAmount Int     @default(1000)
+  durationMs     Int     @default(8000)
+  animation      String  @default("bounce")
+  primaryColor   String  @default("#FFD400")
+  textColor      String  @default("#FFFFFF")
+  titleTemplate  String  @default("{name} تبرّع بـ {amount}")
+  showMessage    Boolean @default(true)
+  soundUrl       String?
+  soundVolume    Int     @default(80)
+  ttsEnabled     Boolean @default(false)
+  bannedWords    String  @default("[]")
+
+  updatedAt DateTime @updatedAt
+
+  creator Creator @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+}

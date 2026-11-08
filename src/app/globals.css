@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #0a0d14;
+  color: #f4f6fb;
+}
+
+body {
+  font-family: var(--font-tajawal), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-panel p-5;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-panel2 px-4 py-3 text-base text-white placeholder-slate-500 outline-none transition focus:border-aqua focus:ring-2 focus:ring-aqua/30;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-300;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-base font-bold transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-white hover:brightness-110 active:scale-[.98];
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-panel2 text-slate-200 hover:border-slate-500;
+  }
+  .btn-sm {
+    @apply rounded-lg px-3 py-1.5 text-sm;
+  }
+}
+
+/* ------------- أنيميشن صفحة التنبيه ------------- */
+@keyframes bounceIn {
+  0% { opacity: 0; transform: translateY(-140px) scale(0.6); }
+  55% { opacity: 1; transform: translateY(16px) scale(1.04); }
+  75% { transform: translateY(-8px) scale(0.99); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes bounceOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(70px) scale(0.8); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-160%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(160%); }
+}
+@keyframes zoomIn {
+  0% { opacity: 0; transform: scale(0.2) rotate(-6deg); }
+  60% { opacity: 1; transform: scale(1.08) rotate(1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes zoomOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.3); }
+}
+@keyframes flipIn {
+  from { opacity: 0; transform: perspective(900px) rotateX(-90deg); }
+  to { opacity: 1; transform: perspective(900px) rotateX(0); }
+}
+@keyframes flipOut {
+  from { opacity: 1; transform: perspective(900px) rotateX(0); }
+  to { opacity: 0; transform: perspective(900px) rotateX(90deg); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 24px var(--glow), 0 0 0 1px var(--glow); }
+  50% { box-shadow: 0 0 52px var(--glow), 0 0 0 1px var(--glow); }
+}
+@keyframes popAmount {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.anim-bounce-in { animation: bounceIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.anim-bounce-out { animation: bounceOut 0.6s ease-in both; }
+.anim-slide-in { animation: slideIn 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+.anim-slide-out { animation: slideOut 0.6s ease-in both; }
+.anim-zoom-in { animation: zoomIn 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+.anim-zoom-out { animation: zoomOut 0.5s ease-in both; }
+.anim-flip-in { animation: flipIn 0.7s ease-out both; }
+.anim-flip-out { animation: flipOut 0.5s ease-in both; }
+.glow { animation: pulseGlow 1.8s ease-in-out infinite; }
+.pop-amount { animation: popAmount 0.6s 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3) both; }
